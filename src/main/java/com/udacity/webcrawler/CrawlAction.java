@@ -68,7 +68,6 @@ public class CrawlAction extends RecursiveAction {
         if (!visitedUrls.add(url)) {
             return;
         }
-        visitedUrls.add(url);
         PageParser.Result result = parserFactory.get(url).parse();
         for (Map.Entry<String, Integer> e : result.getWordCounts().entrySet()) {
             counts.compute(e.getKey(), (k, v) -> (v == null) ? e.getValue() : e.getValue() + v);
