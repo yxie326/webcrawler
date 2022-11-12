@@ -3,7 +3,7 @@ package com.udacity.webcrawler;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.stream.Collectors;
 
 /**
  * Utility class that sorts the map of word counts.
@@ -16,7 +16,7 @@ final class WordCounts {
   /**
    * Given an unsorted map of word counts, returns a new map whose word counts are sorted according
    * to the provided {@link WordCountComparator}, and includes only the top
-   * {@param popluarWordCount} words and counts.
+   * {@param popularWordCount} words and counts.
    *
    * <p>TODO: Reimplement this method using only the Stream API and lambdas and/or method
    *          references.
@@ -27,17 +27,14 @@ final class WordCounts {
    */
   static Map<String, Integer> sort(Map<String, Integer> wordCounts, int popularWordCount) {
 
-    // TODO: Reimplement this method using only the Stream API and lambdas and/or method references.
+    WordCountComparator comparator = new WordCountComparator();
+    return wordCounts.entrySet()
+            .stream()
+            .sorted(comparator)
+            .limit(popularWordCount)
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (k1, k2) -> k2,
+                    LinkedHashMap::new));
 
-    PriorityQueue<Map.Entry<String, Integer>> sortedCounts =
-        new PriorityQueue<>(wordCounts.size(), new WordCountComparator());
-    sortedCounts.addAll(wordCounts.entrySet());
-    Map<String, Integer> topCounts = new LinkedHashMap<>();
-    for (int i = 0; i < Math.min(popularWordCount, wordCounts.size()); i++) {
-      Map.Entry<String, Integer> entry = sortedCounts.poll();
-      topCounts.put(entry.getKey(), entry.getValue());
-    }
-    return topCounts;
   }
 
   /**

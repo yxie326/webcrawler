@@ -43,6 +43,13 @@ public class CrawlAction extends RecursiveAction {
     public static Map<String, Integer> getCounts() {
         return counts;
     }
+    public static void clearCounts() {
+        counts.clear();
+    }
+
+    public static void clearUrlsVisited() {
+        visitedUrls.clear();
+    }
 
     public static int getUrlsVisited() {
         return visitedUrls.size();
@@ -58,7 +65,7 @@ public class CrawlAction extends RecursiveAction {
                 return;
             }
         }
-        if (visitedUrls.contains(url)) {
+        if (!visitedUrls.add(url)) {
             return;
         }
         visitedUrls.add(url);
